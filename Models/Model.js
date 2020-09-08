@@ -8,13 +8,25 @@ class Model {
   }
 
   printFile(filePath, msgToUser = ``) {
-    fs.readFile(filePath, (err, data) => {
+    fs.readFile(filePath, `utf8`, (err, data) => {
       if (err) {
         console.log(err);
         this.msg.reply(`Sorry. Something went wrong.`);
       }
       else {
         this.msg.reply(`${msgToUser}\n\`\`\`${data}\`\`\``);
+      }
+    });
+  }
+
+  appendFile(filePath, stringToAppend) {
+    fs.appendFile(filePath, `${stringToAppend}\n`, (err) => {
+      if (err) {
+        console.log(err);
+        this.msg.reply(`Sorry. Something went wrong.`);
+      }
+      else {
+        this.msg.reply(`${this.constructor.name}: \`${stringToAppend}\` saved successfully!`);
       }
     });
   }

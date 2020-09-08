@@ -9,26 +9,14 @@ class Mail extends Model {
     const filePath = path.join(filesDir, `Mails.txt`);
 
     if (isEmail(this.argv[1])) {
-      this.saveEmail(this.argv[1], filePath);
+      this.appendFile(filePath, this.argv[1]);
     }
     else if (this.argv[1] === `list`) {
       this.printFile(filePath, `Here's all the mails of the group members:`); // In Model
     }
     else {
-      global.sendErrorMsg(this.msg);
+      this.msg.sendErrorReply();
     }
-  }
-
-  saveEmail(mail, filePath) {
-    fs.appendFile(filePath, `${mail}\n`, (err) => {
-      if (err) {
-        console.log(err);
-        this.msg.reply(`Sorry. Something went wrong.`);
-      }
-      else {
-        this.msg.reply(`Mail: \`${mail}\` saved successfully!`);
-      }
-    });
   }
 }
 

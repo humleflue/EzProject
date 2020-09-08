@@ -25,6 +25,8 @@ global.bot.on(`message`, (msg) => {
     // Split the message into an array for easier access to components
     const argv = msg.content.split(` `).map((arg) => arg.toLowerCase());
     argv[0] = argv[0].substring(prefix.length); // Removes the prefix character
+    msg.sendErrorReply = sendErrorReply;
+    msg.sendHelpReply = sendHelpReply;
 
     const allModels = constructModels(msg, argv);
     const modelName = Object.keys(allModels).find((model) => model === argv[0]); // Checks if argv[0] corresponds to any of the models.
@@ -34,8 +36,8 @@ global.bot.on(`message`, (msg) => {
     else {
       switch (argv[0]) {
         case `help`: case `h`: case `commands`:
-          global.sendHelpMsg(msg);              break;
-        default: global.sendErrorMsg(msg);      break;
+          msg.sendHelpReply();              break;
+        default: msg.sendErrorReply();      break;
       }
     }
   }
@@ -48,18 +50,20 @@ function constructModels(msg, argv) {
   };
 }
 
-global.sendErrorMsg = (msg) => {
-  msg.reply(`Invalid command. See ${prefix}help for a list of available commands.`);
-};
+// Is connected to the msg-object
+function sendErrorReply() {
+  this.reply(`Invalid command. See ${prefix}help for a list of available commands.`);
+}
 
+// Is connected to the msg-object
 // Reads the help.txt file and sends it's content as a reply to the user
-global.sendHelpMsg = (msg) => {
+function sendHelpReply() {
   fs.readFile(`help.txt`, `utf-8`, (err, data) => {
     if (err) {
       throw err;
     }
-    msg.reply(data);
+    this.reply(data);
   });
-};
+}
 
 // https://www.reddit.com/r/discordapp/comments/8yfe5f/discordjs_bot_get_username_and_tag/

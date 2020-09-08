@@ -1,0 +1,27 @@
+{
+  "name": "software-botler",
+  "version": "1.0.0",
+  "description": "En discordbot til Software 2019s discordserver",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/humleflue/software-botler.git"
+  },
+  "author": "Software 2019",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/humleflue/software-botler/issues"
+  },
+  "homepage": "https://github.com/humleflue/software-botler#readme",
+  "devDependencies": {
+    "eslint": "^7.7.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0"
+  },
+  "dependencies": {
+    "discord.js": "^12.3.1"
+  }
+}

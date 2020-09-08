@@ -1,9 +1,10 @@
 {
   "name": "software-botler",
   "version": "1.0.0",
-  "description": "En discordbot til Software 2019s discordserver",
+  "description": "En discordbot til et gruppeprojekt",
   "main": "bot.js",
   "scripts": {
+    "start": "nodemon bot.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

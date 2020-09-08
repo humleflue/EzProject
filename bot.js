@@ -2,20 +2,14 @@
 const Discord = require(`discord.js`);
 global.bot    = new Discord.Client(); // Is saved in a global variable, so it's available throughout the modules
 const fs      = require(`fs`);
-const path    = require(`path`);
+// const path    = require(`path`);
 
-const Sudo = require(`./sudo/Sudo`);
+const Mail = require(`./Models/mail/Mail`);
 
 // Variables
 const { token } = JSON.parse(fs.readFileSync(`token.json`));
-const prefix = `;`;
+const prefix = `!`;
 global.prefix = prefix;
-// Construct all models here for convenience later
-function constructModels(msg, argv) {
-  return {
-    sudo: new Sudo(msg, argv),
-  };
-}
 
 // Connect to the discord api
 global.bot.login(token);
@@ -40,26 +34,32 @@ global.bot.on(`message`, (msg) => {
     else {
       switch (argv[0]) {
         case `help`: case `h`: case `commands`:
-          sendHelpMsg(msg);              break;
-        case `ping`: msg.reply(`Pong!`); break; // FIXME: Should be removed in the future
-        default: sendErrorMsg(msg);      break;
+          global.sendHelpMsg(msg);              break;
+        default: global.sendErrorMsg(msg);      break;
       }
     }
   }
 });
 
-function sendErrorMsg(msg) {
-  msg.reply(`Invalid command. See ${prefix}help for a list of available commands.`);
+// Construct all models for convenience
+function constructModels(msg, argv) {
+  return {
+    mail: new Mail(msg, argv),
+  };
 }
 
+global.sendErrorMsg = (msg) => {
+  msg.reply(`Invalid command. See ${prefix}help for a list of available commands.`);
+};
+
 // Reads the help.txt file and sends it's content as a reply to the user
-function sendHelpMsg(msg) {
+global.sendHelpMsg = (msg) => {
   fs.readFile(`help.txt`, `utf-8`, (err, data) => {
     if (err) {
       throw err;
     }
     msg.reply(data);
   });
-}
+};
 
 // https://www.reddit.com/r/discordapp/comments/8yfe5f/discordjs_bot_get_username_and_tag/

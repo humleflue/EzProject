@@ -1,21 +1,20 @@
-const Model = require(`../Model`);
-const path  = require(`path`);
-const fs    = require(`fs`);
+const TextFile = require(`../AbstractModels/TextFile`);
+const path     = require(`path`);
 
 const filesDir = path.join(__dirname, `..`, `..`, `Files`);
 
-class Mail extends Model {
+class Mail extends TextFile {
   handle() {
     const filePath = path.join(filesDir, `Mails.txt`);
 
     if (isEmail(this.argv[1])) {
-      this.appendFile(filePath, this.argv[1]);
+      this.appendFile(filePath, `${this.argv[1]}\n`);
     }
     else if (this.argv[1] === `list`) {
-      this.printFile(filePath, `Here's all the mails of the group members:`); // In Model
+      this.printFile(filePath, `Here's all the mails of the group members:`);
     }
     else {
-      this.msg.sendErrorReply();
+      this.msg.sendInvalidCommandReply();
     }
   }
 }

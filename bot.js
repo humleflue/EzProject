@@ -4,7 +4,9 @@ global.bot    = new Discord.Client(); // Is saved in a global variable, so it's 
 const fs      = require(`fs`);
 // const path    = require(`path`);
 
-const Mail = require(`./Models/mail/Mail`);
+// Models
+const Mail = require(`./Models/Mail/Mail`);
+const Yep  = require(`./Models/YEP/Yep`);
 
 // Variables
 const { token } = JSON.parse(fs.readFileSync(`token.json`));
@@ -22,26 +24,40 @@ global.bot.on(`ready`, () => {
 // Main method. When a message occurs in a chat this happens
 global.bot.on(`message`, (msg) => {
   if (msg.content[0] === prefix) {
-    // Split the message into an array for easier access to components
-    const argv = msg.content.split(` `).map((arg) => arg.toLowerCase());
-    argv[0] = argv[0].substring(prefix.length); // Removes the prefix character
-    msg.sendErrorReply = sendErrorReply;
+    const argv = splitMsgContent(msg);
+    // Provides easy access to the following functions through the msg-object
+    msg.sendInvalidCommandReply = sendInvalidCommandReply;
     msg.sendHelpReply = sendHelpReply;
 
     const allModels = constructModels(msg, argv);
     const modelName = Object.keys(allModels).find((model) => model === argv[0]); // Checks if argv[0] corresponds to any of the models.
-    if (modelName) {
+    if (modelName !== undefined) {
       allModels[modelName].handle(); // Handles all requests to models in a uniform way
     }
     else {
       switch (argv[0]) {
         case `help`: case `h`: case `commands`:
           msg.sendHelpReply();              break;
-        default: msg.sendErrorReply();      break;
+        default: msg.sendInvalidCommandReply();      break;
       }
     }
   }
+  else {
+    const YEP = [`yep`, `Yep`, `YEP`];
+    if (YEP.some((yep) => msg.content.includes(yep))) {
+      const argv = splitMsgContent(msg);
+      const yep = new Yep(msg, argv);
+      yep.handle();
+    }
+  }
 });
+
+function splitMsgContent(msg) {
+  // Split the message into an array for easier access to components
+  const argv = msg.content.split(` `).map((arg) => arg.toLowerCase());
+  argv[0] = argv[0].substring(prefix.length); // Removes the prefix character
+  return argv;
+}
 
 // Construct all models for convenience
 function constructModels(msg, argv) {
@@ -51,7 +67,7 @@ function constructModels(msg, argv) {
 }
 
 // Is connected to the msg-object
-function sendErrorReply() {
+function sendInvalidCommandReply() {
   this.reply(`Invalid command. See ${prefix}help for a list of available commands.`);
 }
 

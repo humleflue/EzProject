@@ -76,7 +76,9 @@ Thumbs.db
 *.log
 *.sql
 *.sqlite
-/Files
+Files/*
+# We want to keep the folder synced
+!Files/.gitkeep
 
 # ignore compiled files
 *.com

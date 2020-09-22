@@ -7,12 +7,24 @@ const fs      = require(`fs`);
 // Models
 const Mail = require(`./Models/Commands/Mail/Mail`);
 const Yep  = require(`./Models/MsgContains/YEP/Yep`);
-const QuestionMark = require(`./Models/MsgContains/OopQuestion/OopQuestion`);
+const QuestionMark = require(`./Models/MsgContains/QuestionMark/QuestionMark`);
 
 // Variables
 const { token } = JSON.parse(fs.readFileSync(`token.json`));
 const prefix = `!`;
 global.prefix = prefix;
+// Construct all models for convenience
+function constructModels(msg, argv) {
+  return {
+    commands: {
+      mail: new Mail(msg, argv),
+    },
+    msgContains: {
+      yep: new Yep(msg, argv),
+      "?": new QuestionMark(msg, argv),
+    },
+  };
+}
 
 // Connect to the discord api
 global.bot.login(token);
@@ -25,17 +37,17 @@ global.bot.on(`ready`, () => {
 // Main method. When a message occurs in a chat this happens
 global.bot.on(`message`, (msg) => {
   const argv = splitMsgContent(msg);
-  const allModels = constructModels(msg, argv);
 
   if (msg.content[0] === prefix) {
+    const commandRelatedModels = constructModels(msg, argv).commands;
     // Provides easy access to the following functions through the msg-object
     msg.sendInvalidCommandReply = sendInvalidCommandReply;
     msg.sendHelpReply = sendHelpReply;
 
     // Checks if argv[0] corresponds to any of the models.
-    const modelName = Object.keys(allModels).find((model) => model === argv[0]);
+    const modelName = Object.keys(commandRelatedModels).find((model) => model === argv[0]);
     if (modelName !== undefined) {
-      allModels[modelName.toLowerCase()].handle(); // Handles all requests to models in a uniform way
+      commandRelatedModels[modelName.toLowerCase()].handle(); // Handles all requests to models in a uniform way
     }
     else {
       switch (argv[0]) {
@@ -45,12 +57,14 @@ global.bot.on(`message`, (msg) => {
       }
     }
   }
-  else if (this.msg.author.bot === false) {
-    const messagesToContain = [`yep`, `?`]; // Should all be lower case
-    const stringsWhichAreContained = msgContains(messagesToContain, msg);
+  else if (msg.author.bot === false) {
+    const msgContainsRelatedModels = constructModels(msg, argv).msgContains;
+
+    const stringsToContain = Object.keys(msgContainsRelatedModels);
+    const stringsWhichAreContained = msgContains(stringsToContain, msg);
     stringsWhichAreContained.forEach((string) => {
       const modelName = string;
-      allModels[modelName].handle();
+      msgContainsRelatedModels[modelName].handle();
     });
   }
 });
@@ -60,15 +74,6 @@ function splitMsgContent(msg) {
   const argv = msg.content.split(` `).map((arg) => arg.toLowerCase());
   argv[0] = argv[0].substring(prefix.length); // Removes the prefix character
   return argv;
-}
-
-// Construct all models for convenience
-function constructModels(msg, argv) {
-  return {
-    mail: new Mail(msg, argv),
-    yep: new Yep(msg, argv),
-    "?": new QuestionMark(msg, argv),
-  };
 }
 
 // Is connected to the msg-object

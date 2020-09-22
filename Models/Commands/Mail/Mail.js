@@ -1,7 +1,7 @@
 const TextFile = require(`../../AbstractModels/TextFile`);
 const path     = require(`path`);
 
-const filesDir = path.join(__dirname, `..`, `..`, `Files`);
+const filesDir = `Files`; // Absolute path
 
 class Mail extends TextFile {
   handle() {

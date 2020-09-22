@@ -23,16 +23,18 @@ global.bot.on(`ready`, () => {
 
 // Main method. When a message occurs in a chat this happens
 global.bot.on(`message`, (msg) => {
+  const argv = splitMsgContent(msg);
+  const allModels = constructModels(msg, argv);
+
   if (msg.content[0] === prefix) {
-    const argv = splitMsgContent(msg);
     // Provides easy access to the following functions through the msg-object
     msg.sendInvalidCommandReply = sendInvalidCommandReply;
     msg.sendHelpReply = sendHelpReply;
 
-    const allModels = constructModels(msg, argv);
-    const modelName = Object.keys(allModels).find((model) => model === argv[0]); // Checks if argv[0] corresponds to any of the models.
+    // Checks if argv[0] corresponds to any of the models.
+    const modelName = Object.keys(allModels).find((model) => model === argv[0]);
     if (modelName !== undefined) {
-      allModels[modelName].handle(); // Handles all requests to models in a uniform way
+      allModels[modelName.toLowerCase()].handle(); // Handles all requests to models in a uniform way
     }
     else {
       switch (argv[0]) {
@@ -43,17 +45,17 @@ global.bot.on(`message`, (msg) => {
     }
   }
   else {
-    const YEP = [`yep`, `Yep`, `YEP`];
-    if (YEP.some((yep) => msg.content.includes(yep))) {
-      const argv = splitMsgContent(msg);
-      const yep = new Yep(msg, argv);
-      yep.handle();
+    const messagesToContain = [`Yep`];
+    const stringWhichIsContained = msgContains(messagesToContain, msg);
+    if (stringWhichIsContained !== undefined) {
+      const modelName = stringWhichIsContained.toLowerCase();
+      allModels[modelName].handle();
     }
   }
 });
 
+// Split the message into an array for easier access to components
 function splitMsgContent(msg) {
-  // Split the message into an array for easier access to components
   const argv = msg.content.split(` `).map((arg) => arg.toLowerCase());
   argv[0] = argv[0].substring(prefix.length); // Removes the prefix character
   return argv;
@@ -63,6 +65,7 @@ function splitMsgContent(msg) {
 function constructModels(msg, argv) {
   return {
     mail: new Mail(msg, argv),
+    yep: new Yep(msg, argv),
   };
 }
 
@@ -80,6 +83,22 @@ function sendHelpReply() {
     }
     this.reply(data);
   });
+}
+
+function msgContains(stringArr, msg) {
+  let done = false;
+  let i = 0;
+  while (!done && i < stringArr.length) {
+    const string = stringArr[i].toLowerCase();
+    done = msg.content.toLowerCase().includes(string);
+    if (!done) {
+      i++;
+    }
+  }
+  if (i === stringArr.length) {
+    return undefined;
+  }
+  return stringArr[i];
 }
 
 // https://www.reddit.com/r/discordapp/comments/8yfe5f/discordjs_bot_get_username_and_tag/

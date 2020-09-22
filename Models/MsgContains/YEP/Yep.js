@@ -1,4 +1,4 @@
-const Model = require(`./../AbstractModels/Model`);
+const Model = require(`../../AbstractModels/Model`);
 
 class Yep extends Model {
   handle() {

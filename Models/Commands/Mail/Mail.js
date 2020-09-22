@@ -1,4 +1,4 @@
-const TextFile = require(`../AbstractModels/TextFile`);
+const TextFile = require(`../../AbstractModels/TextFile`);
 const path     = require(`path`);
 
 const filesDir = path.join(__dirname, `..`, `..`, `Files`);

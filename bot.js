@@ -5,8 +5,9 @@ const fs      = require(`fs`);
 // const path    = require(`path`);
 
 // Models
-const Mail = require(`./Models/Mail/Mail`);
-const Yep  = require(`./Models/YEP/Yep`);
+const Mail = require(`./Models/Commands/Mail/Mail`);
+const Yep  = require(`./Models/MsgContains/YEP/Yep`);
+const QuestionMark = require(`./Models/MsgContains/OopQuestion/OopQuestion`);
 
 // Variables
 const { token } = JSON.parse(fs.readFileSync(`token.json`));
@@ -45,7 +46,7 @@ global.bot.on(`message`, (msg) => {
     }
   }
   else {
-    const messagesToContain = [`Yep`];
+    const messagesToContain = [`yep`, `?`];
     const stringWhichIsContained = msgContains(messagesToContain, msg);
     if (stringWhichIsContained !== undefined) {
       const modelName = stringWhichIsContained.toLowerCase();
@@ -66,6 +67,7 @@ function constructModels(msg, argv) {
   return {
     mail: new Mail(msg, argv),
     yep: new Yep(msg, argv),
+    "?": new QuestionMark(msg, argv),
   };
 }
 

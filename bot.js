@@ -45,7 +45,7 @@ global.bot.on(`message`, (msg) => {
       }
     }
   }
-  else {
+  else if (this.msg.author.bot === false) {
     const messagesToContain = [`yep`, `?`]; // Should all be lower case
     const stringsWhichAreContained = msgContains(messagesToContain, msg);
     stringsWhichAreContained.forEach((string) => {

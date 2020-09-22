@@ -46,12 +46,12 @@ global.bot.on(`message`, (msg) => {
     }
   }
   else {
-    const messagesToContain = [`yep`, `?`];
-    const stringWhichIsContained = msgContains(messagesToContain, msg);
-    if (stringWhichIsContained !== undefined) {
-      const modelName = stringWhichIsContained.toLowerCase();
+    const messagesToContain = [`yep`, `?`]; // Should all be lower case
+    const stringsWhichAreContained = msgContains(messagesToContain, msg);
+    stringsWhichAreContained.forEach((string) => {
+      const modelName = string;
       allModels[modelName].handle();
-    }
+    });
   }
 });
 
@@ -87,23 +87,18 @@ function sendHelpReply() {
   });
 }
 
+// Determines if a message contains any of the strings in the array.
+// Returns all strings if any matches else it returns an empty array.
 function msgContains(stringArr, msg) {
-  let done = false;
-  let i = 0;
-  let res;
-  while (!done && i < stringArr.length) {
-    const string = stringArr[i].toLowerCase();
-    done = msg.content.toLowerCase().includes(string);
-    if (!done) {
-      i++;
+  const res = [];
+
+  stringArr.forEach((string) => {
+    const stringIsContained = msg.content.toLowerCase().includes(string);
+    if (stringIsContained) {
+      res.push(string);
     }
-  }
-  if (i === stringArr.length) {
-    res = undefined;
-  }
-  else {
-    res = stringArr[i];
-  }
+  });
+
   return res;
 }
 

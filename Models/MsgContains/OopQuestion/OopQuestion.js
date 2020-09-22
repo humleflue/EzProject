@@ -1,11 +1,11 @@
 const Model = require(`../../AbstractModels/Model`);
 
 // For testing on Lasses PC
-const patrickID = `187542518659809280`;
-const oopChannelID = `694592320947093516`;
+// const patrickID = `187542518659809280`;
+// const oopChannelID = `694592320947093516`;
 
-// const patrickID = `139033126864158721`;
-// const oopChannelID = `751842041880903701`;
+const patrickID = `139033126864158721`;
+const oopChannelID = `751842041880903701`;
 
 class OopQuestion extends Model {
   handle() {

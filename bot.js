@@ -88,6 +88,7 @@ function sendHelpReply() {
 function msgContains(stringArr, msg) {
   let done = false;
   let i = 0;
+  let res;
   while (!done && i < stringArr.length) {
     const string = stringArr[i].toLowerCase();
     done = msg.content.toLowerCase().includes(string);
@@ -96,9 +97,12 @@ function msgContains(stringArr, msg) {
     }
   }
   if (i === stringArr.length) {
-    return undefined;
+    res = undefined;
   }
-  return stringArr[i];
+  else {
+    res = stringArr[i];
+  }
+  return res;
 }
 
 // https://www.reddit.com/r/discordapp/comments/8yfe5f/discordjs_bot_get_username_and_tag/

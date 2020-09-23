@@ -11,8 +11,8 @@ class OopQuestion extends Model {
   handle() {
     const msgContainsPatrick = this.msg.content.includes(patrickID);
     if (this.msg.channel.id === oopChannelID && !msgContainsPatrick && this.msg.author.id !== patrickID) {
-      this.msg.channel.send(`Looks like you're asking a question in the OOP-channel without tagging Patrick!\n`
-                          + `Wtf? He's the guy who knows everything... Let me help you by tagging him: <@${patrickID}>.`);
+      this.msg.reply(`Looks like you're asking a question in the OOP-channel without tagging Patrick!\n`
+                   + `Wtf? He's the guy who knows everything... Let me help you by tagging him: <@${patrickID}>.`);
     }
   }
 }

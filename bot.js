@@ -8,6 +8,7 @@ const fs      = require(`fs`);
 const Mail = require(`./Models/Commands/Mail/Mail`);
 const Yep  = require(`./Models/MsgContains/YEP/Yep`);
 const QuestionMark = require(`./Models/MsgContains/QuestionMark/QuestionMark`);
+const GroupRoom = require(`./Models/Commands/Grouproom/Grouproom`);
 
 // Variables
 const { token } = JSON.parse(fs.readFileSync(`token.json`));
@@ -18,6 +19,7 @@ function constructModels(msg, argv) {
   return {
     commands: {
       mail: new Mail(msg, argv),
+      grouproom: new GroupRoom(msg, argv),
     },
     msgContains: {
       yep: new Yep(msg, argv),
@@ -36,7 +38,8 @@ global.bot.on(`ready`, () => {
 
 // Main method. When a message occurs in a chat this happens
 global.bot.on(`message`, (msg) => {
-  const argv = splitMsgContent(msg);
+  // Split the message into an array for easier access to components
+  const argv = splitMsgContent(msg.content);
 
   if (msg.content[0] === prefix) {
     const commandRelatedModels = constructModels(msg, argv).commands;
@@ -47,13 +50,14 @@ global.bot.on(`message`, (msg) => {
     // Checks if argv[0] corresponds to any of the models.
     const modelName = Object.keys(commandRelatedModels).find((model) => model === argv[0]);
     if (modelName !== undefined) {
-      commandRelatedModels[modelName.toLowerCase()].handle(); // Handles all requests to models in a uniform way
+      // Handles all requests to models in a uniform way
+      commandRelatedModels[modelName.toLowerCase()].handle();
     }
     else {
       switch (argv[0]) {
         case `help`: case `h`: case `commands`:
-          msg.sendHelpReply();              break;
-        default: msg.sendInvalidCommandReply();      break;
+          msg.sendHelpReply();                  break;
+        default: msg.sendInvalidCommandReply(); break;
       }
     }
   }
@@ -70,8 +74,8 @@ global.bot.on(`message`, (msg) => {
 });
 
 // Split the message into an array for easier access to components
-function splitMsgContent(msg) {
-  const argv = msg.content.split(` `).map((arg) => arg.toLowerCase());
+function splitMsgContent(msgContent) {
+  const argv = msgContent.split(` `).map((arg) => arg.toLowerCase());
   argv[0] = argv[0].substring(prefix.length); // Removes the prefix character
   return argv;
 }

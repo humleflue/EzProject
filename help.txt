@@ -1,3 +1,8 @@
 **Available Commands**
 !mail YourMailHere@mail.com
 !mail list
+
+!group room
+!group name
+
+YEP

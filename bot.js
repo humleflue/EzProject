@@ -8,7 +8,7 @@ const fs      = require(`fs`);
 const Mail = require(`./Models/Commands/Mail/Mail`);
 const Yep  = require(`./Models/MsgContains/YEP/Yep`);
 const QuestionMark = require(`./Models/MsgContains/QuestionMark/QuestionMark`);
-const GroupRoom = require(`./Models/Commands/Grouproom/Grouproom`);
+const Group = require(`./Models/Commands/Group/Group`);
 
 // Variables
 const { token } = JSON.parse(fs.readFileSync(`token.json`));
@@ -19,7 +19,7 @@ function constructModels(msg, argv) {
   return {
     commands: {
       mail: new Mail(msg, argv),
-      grouproom: new GroupRoom(msg, argv),
+      group: new Group(msg, argv),
     },
     msgContains: {
       yep: new Yep(msg, argv),

@@ -8,9 +8,9 @@ const validGroupCommands = [`room`, `mail`, `email`, `name`];
 
 class Group extends TextFile {
   async handle() {
-    const fileDataPath = path.join(filesDir, `Group-${this.guildID}.json`);
+    this.fileDataPath = path.join(filesDir, `Group-${this.guildID}.json`);
     try {
-      const fileData = await this.getFileData(fileDataPath);
+      const fileData = await this.getFileData(this.fileDataPath);
       switch (this.argv[1]) {
         case `set`: this.set(fileData); break;
         case `get`: this.get(fileData); break;
@@ -49,7 +49,7 @@ class Group extends TextFile {
     if (command !== undefined && validCommand !== undefined) {
       fileData[command] = this.argv[3]; // eslint-disable-line prefer-destructuring
       try {
-        await this.writeJSON(this.dataFilePath, fileData);
+        await this.writeJSON(this.fileDataPath, fileData);
         this.msg.reply(`Group ${command} set succesfully.`);
       }
       catch (err) {

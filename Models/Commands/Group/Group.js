@@ -90,7 +90,6 @@ function groupCommandValidator(commandType, commandAction) {
   let res;
   switch (commandType) {
     case `mail`: case `email`:
-      console.log(commandAction);
       if (isEmail(commandAction)) {
         res = commandType;
       }
@@ -106,6 +105,5 @@ function groupCommandValidator(commandType, commandAction) {
       break;
   }
 
-  console.log(res);
   return res;
 }

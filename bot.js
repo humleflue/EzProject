@@ -75,14 +75,15 @@ global.bot.on(`message`, (msg) => {
 
 // Split the message into an array for easier access to components
 function splitMsgContent(msgContent) {
-  const argv = msgContent.split(` `).map((arg) => arg.toLowerCase());
+  const argv = msgContent.split(` `);
   argv[0] = argv[0].substring(prefix.length); // Removes the prefix character
   return argv;
 }
 
 // Is connected to the msg-object
-function sendInvalidCommandReply() {
-  this.reply(`Invalid command. See ${prefix}help for a list of available commands.`);
+function sendInvalidCommandReply(commandName) {
+  const commandString = commandName ? ` syntax: ${commandName}` : ``;
+  this.reply(`Invalid command${commandString}. See ${prefix}help for a list of available commands.`);
 }
 
 // Is connected to the msg-object

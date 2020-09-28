@@ -8,31 +8,27 @@ class TextFile extends Model {
     return fsReadFilePromisified(filePath);
   }
 
+  async writeFile(filePath, data) {
+    return fsWriteFilePromisified(filePath, data);
+  }
+
   async readJSON(filePath) {
     const data = await fsReadFilePromisified(filePath);
     return JSON.parse(data);
   }
 
-  async printFile(filePath, msgToUser = ``) {
-    try {
-      const data = await fsReadFilePromisified(filePath);
-      this.msg.reply(`${msgToUser}\n\`\`\`${data}\`\`\``);
-    }
-    catch (err) {
-      console.log(err);
-      this.msg.reply(`Sorry. Something went wrong.`);
-    }
+  async writeJSON(filePath, object) {
+    const jsonData = JSON.stringify(object);
+    await fsWriteFilePromisified(filePath, jsonData);
   }
 
   async appendFile(filePath, data) {
-    try {
-      await fsAppendFilePromisified(filePath, data);
-      this.msg.reply(`${this.constructor.name}: \`${data}\` saved successfully!`);
-    }
-    catch (err) {
-      console.log(err);
-      this.msg.reply(`Sorry. Something went wrong.`);
-    }
+    await fsAppendFilePromisified(filePath, data);
+  }
+
+  async printFile(filePath, msgToUser = ``) {
+    const data = await fsReadFilePromisified(filePath);
+    this.msg.reply(`${msgToUser}\n\`\`\`${data}\`\`\``);
   }
 }
 
@@ -59,6 +55,19 @@ async function fsReadFilePromisified(filePath) {
       }
       else {
         resolve(data);
+      }
+    });
+  });
+}
+
+async function fsWriteFilePromisified(filePath, data) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(filePath, data, { flag: `w` }, (err) => {
+      if (err) {
+        reject(err);
+      }
+      else {
+        resolve();
       }
     });
   });

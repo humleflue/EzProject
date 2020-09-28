@@ -1,5 +1,7 @@
-const TextFile = require(`../../AbstractModels/TextFile`);
 const path     = require(`path`);
+
+const TextFile = require(`../../AbstractModels/TextFile`);
+const isEmail = require(`../../Helpers/isEmail`);
 
 const filesDir = `Files`; // Absolute path
 
@@ -17,12 +19,6 @@ class Mail extends TextFile {
       this.msg.sendInvalidCommandReply();
     }
   }
-}
-
-// Determines if the string is an email address
-function isEmail(string) {
-  const regEx = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-  return regEx.test(string);
 }
 
 module.exports = Mail;

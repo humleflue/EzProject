@@ -1,8 +1,14 @@
-**Available Commands**
+**AVAILABLE COMMANDS**
+**Mail**
 !mail YourMailHere@mail.com
 !mail list
 
-!group room
-!group name
+**Group**
+!group set room yourRoomHere
+!group get room
+!group set name yourGroupNameHere
+!group get name
+!group set mail yourGroupMailHere
+!group get mail
 
 YEP

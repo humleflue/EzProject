@@ -9,6 +9,7 @@ const Mail = require(`./Models/Commands/Mail/Mail`);
 const Yep  = require(`./Models/MsgContains/YEP/Yep`);
 const QuestionMark = require(`./Models/MsgContains/QuestionMark/QuestionMark`);
 const Group = require(`./Models/Commands/Group/Group`);
+const Rank = require(`./Models/Commands/Rank/Rank`);
 
 // Variables
 const { token } = JSON.parse(fs.readFileSync(`token.json`));
@@ -20,6 +21,7 @@ function constructModels(msg, argv) {
     commands: {
       mail: new Mail(msg, argv),
       group: new Group(msg, argv),
+      rank: new Rank(msg, argv),
     },
     msgContains: {
       yep: new Yep(msg, argv),

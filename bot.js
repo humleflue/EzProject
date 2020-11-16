@@ -77,8 +77,12 @@ global.bot.on(`message`, (msg) => {
       msgContainsRelatedModels[modelName].handle();
     });
   }
+
+  // Check if message was sent by a user in the MsgSendBy models
   const msgSendByRelatedModels = constructModels(msg, argv).msgSendBy;
   const modelName = Object.keys(msgSendByRelatedModels).find((model) => model === msg.author.id);
+  console.log(`msg.author.id: ${msg.author.id}`);
+  console.log(`modelName: ${modelName}\n`);
   if (modelName !== undefined) {
     msgSendByRelatedModels[modelName].handle();
   }

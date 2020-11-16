@@ -23,6 +23,7 @@ function constructModels(msg, argv) {
       mail: new Mail(msg, argv),
       group: new Group(msg, argv),
       rank: new Rank(msg, argv),
+      rang: new Rank(msg, argv),
     },
     msgContains: {
       yep: new Yep(msg, argv),

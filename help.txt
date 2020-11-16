@@ -1,14 +1,14 @@
 **AVAILABLE COMMANDS**
 **Mail**
-!mail YourMailHere@mail.com
-!mail list
+`!mail YourMailHere@student.aau.dk` // Adds a mail to the list
+`!mail list`
 
 **Group**
-!group set room yourRoomHere
-!group get room
-!group set name yourGroupNameHere
-!group get name
-!group set mail yourGroupMailHere
-!group get mail
+`!group set room yourRoomHere`
+`!group room`
+`!group set name yourGroupNameHere`
+`!group name`
+`!group set mail yourGroupMailHere`
+`!group mail`
 
-YEP
+`YEP`

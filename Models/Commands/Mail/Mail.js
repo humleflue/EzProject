@@ -3,11 +3,11 @@ const path     = require(`path`);
 const TextFile = require(`../../AbstractModels/TextFile`);
 const isEmail = require(`../../Helpers/isEmail`);
 
-const filesDir = `Files`; // Absolute path
+const filesDir = path.join(__dirname, `Lists`);
 
 class Mail extends TextFile {
   async handle() {
-    const filePath = path.join(filesDir, `Mails.txt`);
+    const filePath = path.join(filesDir, `Group-${this.guildID}.json`);
 
     if (isEmail(this.argv[1])) {
       const mail = this.argv[1];

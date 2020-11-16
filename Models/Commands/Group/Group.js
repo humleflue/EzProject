@@ -13,8 +13,7 @@ class Group extends TextFile {
       const fileData = await this.getFileData(this.fileDataPath);
       switch (this.argv[1]) {
         case `set`: this.set(fileData); break;
-        case `get`: this.get(fileData); break;
-        default: this.msg.sendInvalidCommandReply(); break;
+        default: this.get(fileData); break;
       }
     }
     catch (err) {
@@ -23,7 +22,7 @@ class Group extends TextFile {
   }
 
   get(fileData) {
-    const command = validGroupCommands.find((aCommand) => aCommand === this.argv[2]);
+    const command = validGroupCommands.find((aCommand) => aCommand === this.argv[1]);
     if (command !== undefined) {
       this.sendGetReply(fileData);
     }
@@ -33,7 +32,7 @@ class Group extends TextFile {
   }
 
   sendGetReply(fileData) {
-    const command = this.argv[2];
+    const command = this.argv[1];
     if (fileData[command] !== undefined) {
       this.msg.reply(`Your group's ${command} is \`${fileData[command]}\``);
     }

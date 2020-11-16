@@ -10,6 +10,7 @@ const Yep  = require(`./Models/MsgContains/YEP/Yep`);
 const QuestionMark = require(`./Models/MsgContains/QuestionMark/QuestionMark`);
 const Group = require(`./Models/Commands/Group/Group`);
 const Rank = require(`./Models/Commands/Rank/Rank`);
+const Daniel = require(`./Models/MsgSendBy/Daniel`);
 
 // Variables
 const { token } = JSON.parse(fs.readFileSync(`token.json`));
@@ -26,6 +27,9 @@ function constructModels(msg, argv) {
     msgContains: {
       yep: new Yep(msg, argv),
       "?": new QuestionMark(msg, argv),
+    },
+    msgSendBy: {
+      91863156703371264: new Daniel(msg, argv),
     },
   };
 }
@@ -72,6 +76,11 @@ global.bot.on(`message`, (msg) => {
       const modelName = string;
       msgContainsRelatedModels[modelName].handle();
     });
+  }
+  const msgSendByRelatedModels = constructModels(msg, argv).msgSendBy;
+  const modelName = Object.keys(msgSendByRelatedModels).find((model) => model === msg.author.id);
+  if (modelName !== undefined) {
+    msgSendByRelatedModels[modelName].handle();
   }
 });
 

@@ -46,9 +46,10 @@ global.bot.on(`ready`, () => {
 global.bot.on(`message`, (msg) => {
   // Split the message into an array for easier access to components
   const argv = splitMsgContent(msg.content);
+  const models = constructModels(msg, argv);
 
   if (msg.content[0] === prefix) {
-    const commandRelatedModels = constructModels(msg, argv).commands;
+    const commandRelatedModels = models.commands;
     // Provides easy access to the following functions through the msg-object
     msg.sendInvalidCommandReply = sendInvalidCommandReply;
     msg.sendHelpReply = sendHelpReply;
@@ -68,7 +69,7 @@ global.bot.on(`message`, (msg) => {
     }
   }
   else if (msg.author.bot === false) {
-    const msgContainsRelatedModels = constructModels(msg, argv).msgContains;
+    const msgContainsRelatedModels = models.msgContains;
 
     const stringsToContain = Object.keys(msgContainsRelatedModels);
     const stringsWhichAreContained = msgContains(stringsToContain, msg);
@@ -79,7 +80,7 @@ global.bot.on(`message`, (msg) => {
   }
 
   // Check if message was sent by a user in the MsgSendBy models
-  const msgSendByRelatedModels = constructModels(msg, argv).msgSendBy;
+  const msgSendByRelatedModels = models.msgSendBy;
   const modelName = Object.keys(msgSendByRelatedModels).find((model) => model === msg.author.id);
   console.log(`msg.author.id: ${msg.author.id}`);
   console.log(`modelName: ${modelName}\n`);

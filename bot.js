@@ -30,7 +30,7 @@ function constructModels(msg, argv) {
       "?": new QuestionMark(msg, argv),
     },
     msgSendBy: {
-      "91863156703371264": new Daniel(msg, argv),
+      // "91863156703371264": new Daniel(msg, argv),
     },
   };
 }

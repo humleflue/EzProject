@@ -1,4 +1,4 @@
-const Model = require(`../../AbstractModels/Model`);
+const Model = require(`../AbstractModels/Model`);
 
 // For testing on Lasses PC
 const patrickID = `187542518659809280`;

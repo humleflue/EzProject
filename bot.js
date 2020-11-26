@@ -6,11 +6,12 @@ const fs      = require(`fs`);
 
 // Models
 const Mail = require(`./Models/Commands/Mail/Mail`);
-const Yep  = require(`./Models/MsgContains/YEP/Yep`);
-const QuestionMark = require(`./Models/MsgContains/QuestionMark/QuestionMark`);
+const Yep  = require(`./Models/MsgContains/Yep`);
+const QuestionMark = require(`./Models/MsgContains/QuestionMark`);
 const Group = require(`./Models/Commands/Group/Group`);
-const Rank = require(`./Models/Commands/Rank/Rank`);
-const Daniel = require(`./Models/MsgSendBy/Daniel`);
+const Rank = require(`./Models/Commands/Rank`);
+const Backtick = require(`./Models/MsgContains/Backtick`);
+// const Daniel = require(`./Models/MsgSendBy/Daniel`);
 
 // Variables
 const { token } = JSON.parse(fs.readFileSync(`token.json`));
@@ -28,6 +29,7 @@ function constructModels(msg, argv) {
     msgContains: {
       yep: new Yep(msg, argv),
       "?": new QuestionMark(msg, argv),
+      "`": new Backtick(msg, argv),
     },
     msgSendBy: {
       // "91863156703371264": new Daniel(msg, argv),

@@ -29,7 +29,7 @@ function constructModels(msg, argv) {
     msgContains: {
       yep: new Yep(msg, argv),
       "?": new QuestionMark(msg, argv),
-      "`": new Backtick(msg, argv),
+      "```": new Backtick(msg, argv),
     },
     msgSendBy: {
       // "91863156703371264": new Daniel(msg, argv),
